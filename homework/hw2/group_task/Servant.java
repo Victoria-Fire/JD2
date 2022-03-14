@@ -1,4 +1,4 @@
-package homework.hw2;
+package homework.hw2.group_task;
 
 import java.util.List;
 import java.util.Random;
@@ -40,3 +40,4 @@ public class Servant implements Runnable {
         System.out.println("Кол-во роботов у " + Thread.currentThread().getName() + " ученого: " + storageSource.getRobotsCount());
     }
 }
+

@@ -1,4 +1,4 @@
-package homework.hw2;
+package homework.hw2.group_task;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,3 +55,4 @@ public class Storage {
         listSize = storage.size();
     }
 }
+

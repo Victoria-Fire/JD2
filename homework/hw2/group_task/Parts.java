@@ -1,4 +1,4 @@
-package homework.hw2;
+package homework.hw2.group_task;
 
 public enum Parts {
     HEAD(1),
@@ -30,3 +30,4 @@ public enum Parts {
         };
     }
 }
+

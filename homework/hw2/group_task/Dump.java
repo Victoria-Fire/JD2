@@ -1,4 +1,4 @@
-package homework.hw2;
+package homework.hw2.group_task;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,3 +24,4 @@ public class Dump {
         dump.add(item);
     }
 }
+

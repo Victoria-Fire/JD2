@@ -1,4 +1,4 @@
-package homework.hw2;
+package homework.hw2.group_task;
 
 import java.util.Random;
 
@@ -23,3 +23,4 @@ public class Factory implements Runnable {
         }
     }
 }
+
