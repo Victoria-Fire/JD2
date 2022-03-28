@@ -1,0 +1,45 @@
+create database people;
+
+use people;
+
+create table people.person (
+    id             int auto_increment,
+    age            int,
+    salary         dec(10,2),
+    passport       char(10),
+    address        varchar(200),
+    dateOfBirthday date,
+    dateTimeCreate datetime,
+    timeToLunch    time,
+    letter         text,
+    constraint person_id_uindex unique (id)
+);
+alter table people.person add primary key (id);
+
+insert into people.person(age, salary, passport, address, dateOfBirthday, dateTimeCreate, timeToLunch, letter)
+VALUES (24, 56.76, 'Belarus', 'Minsk', '1996-01-11', '2022-03-23 23:11:01', '23:56:59',
+        'Обыкновенный бобр, или речной бобр, — полуводное млекопитающее отряда грызунов; один из двух современных
+представителей семейства бобровых. Самый крупный грызун фауны Старого Света и второй по величине грызун после капибары.');
+
+insert into people.person(age, salary, passport, address, dateOfBirthday, dateTimeCreate, timeToLunch, letter)
+VALUES (19, 10.0, 'Ukraine', 'Kiev', '1985-12-12', '2006-05-02 18:30-32', '14:17:22',
+        'Белки — род грызунов семейства беличьих. Кроме собственно рода Sciurus, белками называют ещё
+целый ряд представителей семейства беличьих из родов красные белки (Tamiasciurus), пальмовые белки (Funambulus) и многих
+других.');
+
+insert into people.person(age, salary, passport, address, dateOfBirthday, dateTimeCreate, timeToLunch, letter)
+VALUES (37, 180.89, 'France', 'Paris', '2001-07-31', '2011-09-09 10:07:33', '03:12:47',
+        'Обыкновенный бегемот, или гиппопотам, — парнокопытное млекопитающее из семейства бегемотовых, единственный
+современный вид рода Hippopotamus.');
+
+insert into people.person(age, salary, passport, address, dateOfBirthday, dateTimeCreate, timeToLunch, letter)
+VALUES (14, 55.30, 'Italy', 'Rome', '2011-12-14', '1985-01-27 12:45:25', '16:45:53',
+        'Жирафы — род парнокопытных млекопитающих из семейства жирафовых.');
+
+insert into people.person(age, salary, passport, address, dateOfBirthday, dateTimeCreate, timeToLunch, letter)
+VALUES (68, 400.00, 'Germany', 'Berlin', '1982-01-29', '2016-11-11 02:02:02', '18:34:11',
+        'Тигр — вид хищных млекопитающих семейства кошачьих, один из пяти представителей рода пантера, который
+относится к подсемейству больших кошек.');
+
+select * from people.person where person.age > 21
+order by person.dateTimeCreate desc;
