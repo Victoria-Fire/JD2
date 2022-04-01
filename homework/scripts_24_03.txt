@@ -1,0 +1,112 @@
+create database homework4;
+
+use homework4;
+
+create table countries (
+    id int primary key auto_increment,
+    name char(100) not null,
+    population int null,
+    language char(100) null,
+    constraint countries_id_uindex unique (id)
+);
+
+create table cities (
+  id int primary key auto_increment,
+  name char(100) not null,
+  population int null,
+  id_country int,
+  constraint cities_id_uindex unique (id),
+  constraint cities_countries_id_fk
+      foreign key (id_country) references homework4.countries(id)
+);
+
+insert into homework4.countries (name, population, language) VALUES
+('Беларусь', 9349645, 'белорусский, русский'), ('Чехия', 10693939, 'чешский'),
+('Польша', 38313035, 'польский'), ('Германия', 83349300, 'немецкий'),
+('Россия', 146033315, 'русский'), ('Франция', 68959599, 'французский');
+
+insert into homework4.cities (name, population, id_country)VALUES
+('Москва', 12632409, 5), ('Берлин', 3664088, 4), ('Минск', 2009786, 1), ('Париж', 2148327, 6),
+('Санкт-Петербург', 5376672, 5), ('Марсель', 870018, 6), ('Прага', 1331598, 2), ('Дрезден', 554907, 4),
+('Витебск', 364800, 1), ('Брест', 354318, 1), ('Барселона', 1636732, null);
+
+select * from homework4.cities order by cities.population desc;
+select * from homework4.countries order by countries.name;
+
+select * from homework4.countries
+inner join homework4.cities on countries.id = cities.id_country;
+
+select * from homework4.countries
+left join homework4.cities on countries.id = cities.id_country;
+
+select * from homework4.countries
+right join homework4.cities on countries.id = cities.id_country;
+
+select * from homework4.cities as a
+join homework4.cities as b where a.population < b.population and b.id = 7;
+
+select * from homework4.countries
+left join homework4.cities on countries.id = cities.id_country
+union
+select * from homework4.countries
+right join homework4.cities on countries.id = cities.id_country;
+
+select * from homework4.cities where name like '%ск';
+
+select homework4.countries.population as pop from homework4.countries;
+
+create table copyCountries (
+    id int primary key auto_increment,
+    name char(100) not null,
+    population int null,
+    language char(100) null,
+    constraint copyCountries_id_uindex unique (id)
+);
+
+insert into homework4.copyCountries select * from homework4.countries;
+
+select * from homework4.copyCountries;
+
+delete from homework4.copyCountries where id = 5;
+truncate table homework4.copyCountries;
+
+select * from homework4.cities where id % 2 != 0;
+
+select homework4.countries.name, count(homework4.cities.id_country) as number_of_cities
+from homework4.countries join homework4.cities on countries.id = cities.id_country
+group by homework4.cities.id_country having number_of_cities > 1;
+
+alter table homework4.countries add date date null;
+
+update homework4.countries set homework4.countries.date = '2021_01-01' where id = 1;
+update homework4.countries set homework4.countries.date = '2020_01-01' where id = 2;
+update homework4.countries set homework4.countries.date = '2019_01-01' where id = 3;
+update homework4.countries set homework4.countries.date = '2021_07-01' where id = 4;
+update homework4.countries set homework4.countries.date = '2022_03-03' where id = 5;
+update homework4.countries set homework4.countries.date = '2021_01-01' where id = 6;
+
+select DATE_ADD(homework4.countries.date, INTERVAL 1 DAY) as new_date from homework4.countries;
+
+select distinct homework4.countries.date from homework4.countries;
+
+select AVG(homework4.cities.population) from homework4.cities;
+
+select * from homework4.cities
+where homework4.cities.population > (select AVG(homework4.cities.population) from homework4.cities);
+
+select homework4.countries.name from homework4.cities
+right join homework4.countries on countries.id = cities.id_country
+where homework4.cities.name IS NULL;
+
+update homework4.cities set homework4.cities.population =
+case
+    when homework4.cities.population > 1000000 then 1500000
+else 123
+end;
+
+select * from homework4.cities;
+
+select concat(homework4.countries.name, homework4.countries.population)
+    as new_field from homework4.countries;
+
+alter table homework4.countries rename homework4.counties_of_the_world;
