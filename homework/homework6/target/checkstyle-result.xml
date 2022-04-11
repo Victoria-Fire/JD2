@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.29">
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\App.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\dao\DAO.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\dao\DAOimpl.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\entity\Car.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\entity\MyColumn.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\entity\MyTable.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\JDBCResource.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\java\by\it\academy\jd2\reunova\JDBCUtils.java">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\main\resources\homework_6.properties">
+</file>
+<file name="D:\MyProjectsMaven\homework6\src\test\resources\homework_6.properties">
+</file>
+</checkstyle>

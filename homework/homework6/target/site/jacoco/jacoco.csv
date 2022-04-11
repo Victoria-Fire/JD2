@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+homework6,by.it.academy.jd2.reunova,JDBCResource,3,23,0,0,1,8,1,5,1,5
+homework6,by.it.academy.jd2.reunova,App,36,0,0,0,9,0,2,0,2,0
+homework6,by.it.academy.jd2.reunova,JDBCUtils,6,10,0,0,3,5,1,1,1,1
+homework6,by.it.academy.jd2.reunova.entity,Car,175,18,26,0,7,3,25,2,12,2
+homework6,by.it.academy.jd2.reunova.dao,DAOimpl,15,301,2,12,10,60,2,13,0,8

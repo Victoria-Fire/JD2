@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DAOimpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">homework6</a> &gt; <a href="index.source.html" class="el_package">by.it.academy.jd2.reunova.dao</a> &gt; <span class="el_source">DAOimpl.java</span></div><h1>DAOimpl.java</h1><pre class="source lang-java linenums">package by.it.academy.jd2.reunova.dao;
+
+import by.it.academy.jd2.reunova.JDBCUtils;
+import by.it.academy.jd2.reunova.entity.MyColumn;
+import by.it.academy.jd2.reunova.entity.MyTable;
+
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+import java.util.stream.Collectors;
+
+<span class="fc" id="L15">public class DAOimpl&lt;T&gt; implements DAO&lt;T&gt; {</span>
+<span class="fc" id="L16">    private String table = null;</span>
+<span class="fc" id="L17">    private Map&lt;Field, String&gt; columns = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L18">    private Map&lt;String, Object&gt; values = new HashMap&lt;&gt;();</span>
+
+    public void getValuesEntity(T t) {
+<span class="fc" id="L21">        Class&lt;?&gt; type = t.getClass();</span>
+
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (type.isAnnotationPresent(MyTable.class)) {</span>
+<span class="fc" id="L24">            table = type.getAnnotation(MyTable.class).name();</span>
+        }
+
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (table != null) {</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            for (Field field : type.getDeclaredFields()) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">                if (field.isAnnotationPresent(MyColumn.class)) {</span>
+<span class="fc" id="L30">                    columns.put(field, field.getAnnotation(MyColumn.class).name());</span>
+                }
+            }
+
+<span class="fc bfc" id="L34" title="All 2 branches covered.">            for (Map.Entry&lt;Field, String&gt; column : columns.entrySet()) {</span>
+<span class="fc" id="L35">                column.getKey().setAccessible(true);</span>
+                try {
+<span class="fc" id="L37">                    values.put(column.getValue(), column.getKey().get(t));</span>
+<span class="nc" id="L38">                } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L39">                    e.printStackTrace();</span>
+<span class="fc" id="L40">                }</span>
+<span class="fc" id="L41">            }</span>
+        }
+<span class="fc" id="L43">    }</span>
+
+    @Override
+    public void select(T t) {
+        Connection connection;
+        Statement statement;
+<span class="fc" id="L49">        getValuesEntity(t);</span>
+
+<span class="fc" id="L51">        String sql = &quot;select * from &quot; + table;</span>
+
+        try {
+<span class="fc" id="L54">            connection = JDBCUtils.getConnection();</span>
+<span class="fc" id="L55">            statement = connection.createStatement();</span>
+<span class="fc" id="L56">            ResultSet resultSet = statement.executeQuery(sql);</span>
+<span class="fc" id="L57">            int columnSelect = resultSet.getMetaData().getColumnCount();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            while (resultSet.next()) {</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">                for (int i = 1; i &lt;= columnSelect; i++) {</span>
+<span class="fc" id="L60">                    System.out.print(resultSet.getString(i) + &quot; &quot;);</span>
+                }
+<span class="fc" id="L62">                System.out.println(&quot;&quot;);</span>
+            }
+<span class="nc" id="L64">        } catch (SQLException throwables) {</span>
+<span class="nc" id="L65">            throwables.printStackTrace();</span>
+<span class="fc" id="L66">        }</span>
+<span class="fc" id="L67">    }</span>
+
+    @Override
+    public void update(T t, String nameColumn, String newValue, int id) {
+        Connection connection;
+        Statement statement;
+<span class="fc" id="L73">        getValuesEntity(t);</span>
+
+<span class="fc" id="L75">        String column = values.keySet()</span>
+<span class="fc" id="L76">                .stream()</span>
+<span class="fc" id="L77">                .filter(s -&gt; s.equals(nameColumn))</span>
+<span class="fc" id="L78">                .findFirst()</span>
+<span class="fc" id="L79">                .orElse(null);</span>
+
+<span class="fc" id="L81">        String valueUpdate = &quot;'&quot; + newValue + &quot;'&quot;;</span>
+
+<span class="fc" id="L83">        String sql = &quot;update &quot; + table + &quot; set &quot; + column + &quot; =  &quot; + valueUpdate + &quot; where identifier = &quot; + id;</span>
+
+        try {
+<span class="fc" id="L86">            connection = JDBCUtils.getConnection();</span>
+<span class="fc" id="L87">            statement = connection.createStatement();</span>
+<span class="fc" id="L88">            statement.executeUpdate(sql);</span>
+<span class="nc" id="L89">        } catch (SQLException throwables) {</span>
+<span class="nc" id="L90">            throwables.printStackTrace();</span>
+<span class="fc" id="L91">        }</span>
+<span class="fc" id="L92">    }</span>
+
+    @Override
+    public void delete(T t, int id) {
+        Connection connection;
+        Statement statement;
+<span class="fc" id="L98">        getValuesEntity(t);</span>
+
+<span class="fc" id="L100">        String sql = &quot;delete from &quot; + table + &quot; where identifier = &quot; + id;</span>
+
+        try {
+<span class="fc" id="L103">            connection = JDBCUtils.getConnection();</span>
+<span class="fc" id="L104">            statement = connection.createStatement();</span>
+<span class="fc" id="L105">            statement.executeUpdate(sql);</span>
+<span class="nc" id="L106">        } catch (SQLException throwables) {</span>
+<span class="nc" id="L107">            throwables.printStackTrace();</span>
+<span class="fc" id="L108">        }</span>
+<span class="fc" id="L109">    }</span>
+
+    @Override
+    public void insert(T t) {
+        Connection connection;
+        Statement statement;
+<span class="fc" id="L115">        getValuesEntity(t);</span>
+
+<span class="fc" id="L117">        String insertedValues = values.values()</span>
+<span class="fc" id="L118">                .stream()</span>
+<span class="fc" id="L119">                .map(value -&gt; &quot;'&quot; + value + &quot;'&quot;)</span>
+<span class="fc" id="L120">                .collect(Collectors.joining(&quot;,&quot;, &quot;(&quot;, &quot;)&quot;));</span>
+
+<span class="fc" id="L122">        String sql = &quot;insert into &quot; + table + &quot;(&quot; + String.join(&quot;, &quot;, values.keySet()) + &quot;) &quot; + &quot;values &quot; + insertedValues;</span>
+
+        try {
+<span class="fc" id="L125">            connection = JDBCUtils.getConnection();</span>
+<span class="fc" id="L126">            statement = connection.createStatement();</span>
+<span class="fc" id="L127">            statement.executeUpdate(sql);</span>
+<span class="nc" id="L128">        } catch (SQLException throwables) {</span>
+<span class="nc" id="L129">            throwables.printStackTrace();</span>
+<span class="fc" id="L130">        }</span>
+<span class="fc" id="L131">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
